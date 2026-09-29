@@ -1,0 +1,4 @@
+FROM nginx
+RUN apt-get update && apt-get install -y curl
+ENV TARGET_URL=https://example.com
+HEALTHCHECK CMD curl --fail "$TARGET_URL" || exit 1

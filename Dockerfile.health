@@ -1,0 +1,4 @@
+FROM nginx 
+RUN apt-get update && apt-get install -y curl
+
+HEALTHCHECK CMD curl --fail google.com || exit 1

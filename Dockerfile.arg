@@ -1,0 +1,5 @@
+FROM ubuntu
+ARG BUILD_NAME=ARG_ITACHI
+ENV RUN_NAME=ENV_ITACHI
+RUN echo "Build time: $BUILD_NAME"
+CMD ["bash", "-c", "echo Runtime: $RUN_NAME"]
