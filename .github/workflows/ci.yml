@@ -14,6 +14,6 @@ jobs:
          run: test -s index.html
 
        - name: Build docker image
-         run: docker build -t my-server .
+         run: docker build -t Hiking .
 
 
