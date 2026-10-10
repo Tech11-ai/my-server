@@ -2,9 +2,10 @@ name: CI Pipeline
 
 on:
   push:
+    branches: [master]
 
 jobs:
-  test:
+  build-and-push:
     runs-on: ubuntu-latest
     steps:
        - name: Checkout code
@@ -13,7 +14,21 @@ jobs:
        - name: Validate homepage
          run: test -s index.html
 
-       - name: Build docker image
-         run: docker build -t Hiking .
+       - name: Set up Docker Buildx
+         run: docker/setup-buildx-action@v3
+
+       - name: Log in to Docker Hub
+         uses: docker/login-action@v3
+         with:
+            username: ${{ secrets.DOCKERHUB_USERNAME }}
+            password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+       - name: Build and push image
+         uses: docker/build-push-action@v6
+         with:
+            context: .
+            files: ./Dockerfile.nginx
+            push: true
+            tags: ${{ secrets.DOCKERHUB_USERNAME }}/my-server:latest
 
 
