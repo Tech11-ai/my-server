@@ -22,12 +22,14 @@ jobs:
          with:
            username: ${{ secrets.DOCKERHUB_USERNAME }}
            password: ${{ secrets.DOCKERHUB_TOKEN }}
+           if: success()
+           run: echo "Logged in"
 
        - name: Build and push image
          uses: docker/build-push-action@v6
          with:
             context: .
-            files: ./Dockerfile.nginx
+            file: ./Dockerfile.nginx
             push: true
             tags: ${{ secrets.DOCKERHUB_USERNAME }}/my-server:latest
 
