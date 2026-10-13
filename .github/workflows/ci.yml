@@ -22,8 +22,6 @@ jobs:
          with:
            username: ${{ secrets.DOCKERHUB_USERNAME }}
            password: ${{ secrets.DOCKERHUB_TOKEN }}
-           if: success()
-           run: echo "Logged in"
 
        - name: Build and push image
          uses: docker/build-push-action@v6
@@ -33,4 +31,14 @@ jobs:
             push: true
             tags: ${{ secrets.DOCKERHUB_USERNAME }}/my-server:latest
 
+  deploy:
+    needs: build-and-push
+    runs-on: self-hosted
+    steps:
+      - name: Pull latest image
+        run: docker pull itachiuchiha09/my-server:latest
 
+      - name: Replace website container
+        run: |
+          docker rm -f deploy-test || true
+          docker run -d --name deploy-test -p 8080:80 itachiuchiha09/my-server:latest
